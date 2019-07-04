@@ -176,8 +176,10 @@ class FileProblem(Problem):
             if problem_content["allowed_exts"] == "":
                 del problem_content["allowed_exts"]
             else:
-                problem_content["allowed_exts"] = problem_content["allowed_exts"].replace(' ', ',')
-                problem_content["allowed_exts"] = problem_content["allowed_exts"].split(',')
+                problem_content["allowed_exts"] = problem_content["allowed_exts"].replace(',', '')
+                problem_content["allowed_exts"] = [ext.rstrip() for ext in problem_content["allowed_exts"].split(' ') if ext]
+                if not problem_content["allowed_exts"]:
+                    problem_content["allowed_exts"] = [" "]
 
         if "max_size" in problem_content:
             try:
@@ -190,7 +192,8 @@ class FileProblem(Problem):
         if not str(self.get_id()) in task_input:
             return False
         try:
-            if not task_input[self.get_id()]["filename"].endswith(tuple(self._allowed_exts or default_allowed_extension)):
+            allowed_exts = [""] if self._allowed_exts == [" "] else self._allowed_exts
+            if not task_input[self.get_id()]["filename"].endswith(tuple(allowed_exts or default_allowed_extension)):
                 return False
 
             if sys.getsizeof(task_input[self.get_id()]["value"]) > (self._max_size or default_max_size):

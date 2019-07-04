@@ -133,7 +133,8 @@ class DisplayableFileProblem(FileProblem, DisplayableProblem):
         """ Show FileBox """
         header = ParsableText(self.gettext(language, self._header), "rst",
                               translation=self._translations.get(language, gettext.NullTranslations()))
-        return str(DisplayableFileProblem.get_renderer(template_helper).tasks.file(self.get_id(), header, self._max_size, self._allowed_exts))
+        allowed_exts = [""] if self._allowed_exts == [" "] else self._allowed_exts
+        return str(DisplayableFileProblem.get_renderer(template_helper).tasks.file(self.get_id(), header, self._max_size, allowed_exts))
 
     @classmethod
     def show_editbox_templates(cls, template_helper, key):
