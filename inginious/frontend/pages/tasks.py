@@ -276,6 +276,7 @@ class BaseTaskPage(object):
             self.submission_manager.kill_running_submission(userinput["submissionid"])  # ignore return value
             web.header('Content-Type', 'application/json')
             return json.dumps({'status': 'done'})
+
         elif "@action" in userinput and userinput["@action"] == "set_submission" and "submissionid" in userinput:
             web.header('Content-Type', 'application/json')
             if task.get_evaluate() != 'student':
@@ -288,7 +289,7 @@ class BaseTaskPage(object):
         else:
             raise web.notfound()
 
-    def submission_to_json(self, task, data, debug, reloading=False, replace=False, tags=[]):
+    def submission_to_json(self, task, data, debug, reloading=False, replace=False, tags=None):
         """ Converts a submission to json (keeps only needed fields) """
 
         if "ssh_host" in data:
@@ -356,9 +357,19 @@ class BaseTaskPage(object):
             tojson["status"] = 'ok'
             # And also include input
             tojson["input"] = data.get('input', {})
+            for problem_id, problem_input in tojson["input"].items():
+                try:
+                    if not problem_id.startswith('@'):
+                        if "filename" in problem_input:
+                            # No need to send PDF file too because it is loaded by the embed viewer...
+                            tojson["input"][problem_id]["value"] = ""
+                except:
+                    pass
 
         if "tests" in data:
             tojson["tests"] = {}
+            if not tags:
+                tags = []
             for key, tag in tags.items():  # Tags only visible for admins should not appear in the json for students.
                 if tag.get_type() in [0, 1] and (tag.is_visible_for_student() or debug) and key in data["tests"]:
                     tojson["tests"][key] = data["tests"][key]
