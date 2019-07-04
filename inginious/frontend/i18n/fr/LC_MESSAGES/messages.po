@@ -3038,7 +3038,7 @@ msgstr ""
 msgid "Allowed file extensions (including the dot, separated by spaces)"
 msgstr ""
 "Extensions de fichier autorisées (incluant le point, séparées par des "
-"espaces)"
+"espaces ou virgules)"
 
 #: inginious/frontend/templates/course_admin/subproblems/file.html:21
 msgid "Maximum file size (in bytes)"

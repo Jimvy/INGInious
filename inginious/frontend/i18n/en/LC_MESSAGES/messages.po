@@ -2911,7 +2911,7 @@ msgid "Default value"
 msgstr ""
 
 #: inginious/frontend/templates/course_admin/subproblems/file.html:15
-msgid "Allowed file extensions (including the dot, separated by spaces)"
+msgid "Allowed file extensions (including the dot, separated by spaces or commas)"
 msgstr ""
 
 #: inginious/frontend/templates/course_admin/subproblems/file.html:21
