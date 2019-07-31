@@ -369,7 +369,7 @@ class BaseTaskPage(object):
         if "tests" in data:
             tojson["tests"] = {}
             if not tags:
-                tags = []
+                tags = {}
             for key, tag in tags.items():  # Tags only visible for admins should not appear in the json for students.
                 if tag.get_type() in [0, 1] and (tag.is_visible_for_student() or debug) and key in data["tests"]:
                     tojson["tests"][key] = data["tests"][key]
